@@ -33,6 +33,11 @@ describe('User model', () => {
     });
 
     // TODO: Task 1 - Write additional test cases for saveUser
+    it('should return error when create throws', async () => {
+      mockingoose(UserModel).toReturn(new Error('boom'), 'create');
+      const savedUser = await saveUser(user);
+      expect(savedUser).toEqual({ error: 'Error when saving user' });
+    });
   });
 });
 
@@ -51,6 +56,11 @@ describe('getUserByUsername', () => {
   });
 
   // TODO: Task 1 - Write additional test cases for getUserByUsername
+  it('should return error when findOne throws', async () => {
+    mockingoose(UserModel).toReturn(new Error('boom'), 'findOne');
+    const result = await getUserByUsername(user.username);
+    expect(result).toEqual({ error: 'Error when getting user by username' });
+  });
 });
 
 describe('loginUser', () => {
@@ -73,6 +83,12 @@ describe('loginUser', () => {
   });
 
   // TODO: Task 1 - Write additional test cases for loginUser
+  it('should return error when findOne throws', async () => {
+    mockingoose(UserModel).toReturn(new Error('boom'), 'findOne');
+    const credentials: UserCredentials = { username: user.username, password: user.password };
+    const result = await loginUser(credentials);
+    expect(result).toEqual({ error: 'Error when logging in user' });
+  });
 });
 
 describe('deleteUserByUsername', () => {
@@ -90,6 +106,11 @@ describe('deleteUserByUsername', () => {
   });
 
   // TODO: Task 1 - Write additional test cases for deleteUserByUsername
+  it('should return error when findOneAndDelete throws', async () => {
+    mockingoose(UserModel).toReturn(new Error('boom'), 'findOneAndDelete');
+    const result = await deleteUserByUsername(user.username);
+    expect(result).toEqual({ error: 'Error when deleting user by username' });
+  });
 });
 
 describe('updateUser', () => {
@@ -123,4 +144,9 @@ describe('updateUser', () => {
   });
 
   // TODO: Task 1 - Write additional test cases for updateUser
+  it('should return error when findOneAndUpdate throws', async () => {
+    mockingoose(UserModel).toReturn(new Error('boom'), 'findOneAndUpdate');
+    const result = await updateUser(user.username, { password: 'x' });
+    expect(result).toEqual({ error: 'Error when updating user' });
+  });
 });
