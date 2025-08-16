@@ -38,7 +38,8 @@ const userController = () => {
     }
 
     try {
-      const user = await saveUser({ username, password, dateJoined: new Date() });
+      const newUser: User = { username, password, dateJoined: new Date() };
+      const user = await saveUser(newUser);
       if ('error' in user) {
         res.status(400).send(user.error);
         return;
@@ -66,7 +67,8 @@ const userController = () => {
     }
 
     try {
-      const user = await loginUser({ username, password });
+      const credentials: UserCredentials = { username, password };
+      const user = await loginUser(credentials);
       if ('error' in user) {
         res.status(400).send(user.error);
         return;

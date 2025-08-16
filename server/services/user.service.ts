@@ -11,7 +11,7 @@ export const saveUser = async (user: User): Promise<UserResponse> => {
   // TODO: Task 1 - Implement the saveUser function. Refer to other service files for guidance.
   try {
     const newUser = await UserModel.create(user);
-    const { password, ...safeUser } = newUser.toObject();
+    const safeUser = await UserModel.findById(newUser._id).select('-password');
     return safeUser as SafeUser;
   } catch (error) {
     return { error: 'Error when saving user' };

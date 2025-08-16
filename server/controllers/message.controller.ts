@@ -15,9 +15,10 @@ const messageController = (socket: FakeSOSocket) => {
    */
   const isRequestValid = (req: AddMessageRequest): boolean =>
     // TODO: Task 2 - Implement the isRequestValid function
-    !!req.body.messageToAdd.msg &&
-    !!req.body.messageToAdd.msgFrom &&
-    !!req.body.messageToAdd.msgDateTime;
+    !!req.body.messageToAdd &&
+    req.body.messageToAdd.msg !== undefined &&
+    req.body.messageToAdd.msgFrom !== undefined &&
+    req.body.messageToAdd.msgDateTime !== undefined;
   /**
    * Validates the Message object to ensure it contains the required fields.
    *
