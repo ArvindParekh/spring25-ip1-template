@@ -1,5 +1,5 @@
 import UserModel from '../models/users.model';
-import { SafeUser, User, UserCredentials, UserResponse } from '../types/types';
+import { User, UserCredentials, UserResponse } from '../types/types';
 
 /**
  * Saves a new user to the database.
@@ -12,7 +12,10 @@ export const saveUser = async (user: User): Promise<UserResponse> => {
   try {
     const newUser = await UserModel.create(user);
     const safeUser = await UserModel.findById(newUser._id).select('-password');
-    return safeUser as SafeUser;
+    if (!safeUser) {
+      throw new Error('Error when saving user');
+    }
+    return safeUser;
   } catch (error) {
     return { error: 'Error when saving user' };
   }
@@ -31,7 +34,7 @@ export const getUserByUsername = async (username: string): Promise<UserResponse>
     if (!user) {
       throw new Error('User not found');
     }
-    return user as SafeUser;
+    return user;
   } catch (error) {
     return { error: 'Error when getting user by username' };
   }
@@ -53,7 +56,7 @@ export const loginUser = async (loginCredentials: UserCredentials): Promise<User
     if (!user) {
       throw new Error('Invalid username or password');
     }
-    return user as SafeUser;
+    return user;
   } catch (error) {
     return { error: 'Error when logging in user' };
   }
@@ -72,7 +75,7 @@ export const deleteUserByUsername = async (username: string): Promise<UserRespon
     if (!user) {
       throw new Error('User not found');
     }
-    return user as SafeUser;
+    return user;
   } catch (error) {
     return { error: 'Error when deleting user by username' };
   }
@@ -97,7 +100,7 @@ export const updateUser = async (
     if (!user) {
       throw new Error('User not found');
     }
-    return user as SafeUser;
+    return user;
   } catch (error) {
     return { error: 'Error when updating user' };
   }
