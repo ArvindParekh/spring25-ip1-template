@@ -61,6 +61,7 @@ describe('getUserByUsername', () => {
     mockingoose(UserModel).toReturn(null, 'findOne');
     const result = await getUserByUsername('nonexistent');
     expect(result).toEqual({ error: 'Error when getting user by username' });
+    expect(result).not.toHaveProperty('password');
   });
 
   // TODO: Task 1 - Write additional test cases for getUserByUsername
@@ -95,6 +96,7 @@ describe('loginUser', () => {
     const credentials: UserCredentials = { username: 'wrong', password: 'wrong' };
     const result = await loginUser(credentials);
     expect(result).toEqual({ error: 'Error when logging in user' });
+    expect(result).not.toHaveProperty('password');
   });
 
   // TODO: Task 1 - Write additional test cases for loginUser
@@ -124,6 +126,7 @@ describe('deleteUserByUsername', () => {
     mockingoose(UserModel).toReturn(null, 'findOneAndDelete');
     const result = await deleteUserByUsername('nonexistent');
     expect(result).toEqual({ error: 'Error when deleting user by username' });
+    expect(result).not.toHaveProperty('password');
   });
 
   // TODO: Task 1 - Write additional test cases for deleteUserByUsername
